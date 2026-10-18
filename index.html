@@ -9,8 +9,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cápsula">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#DFE9FD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13244A" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -18,48 +18,157 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 /* Layout: una columna estilo iOS — fecha y título grande, frasco ámbar protagonista con el conteo al lado,
    semana de tomas, botón principal tipo cápsula y listas agrupadas. Hojas y alertas flotantes de vidrio. */
-:root{
-  --bg:#F2F2F7; --card:#FFFFFF; --fg:#0B0B0F; --fg2:#6C6C72; --sep:#D9D9DE; --fill:#E9E9EE; --fill-2:#DEDEE3; --knob:#FFFFFF;
-  --tint:#007AFF; --on-tint:#FFFFFF; --tint-glow:rgba(0,122,255,.28);
-  --warn:#C26A00; --warn-bg:#FFF0DC; --on-warn:#FFFFFF;
-  --crit:#D93025; --crit-bg:#FFE6E3; --on-crit:#FFFFFF;
-  --ok:#1E8E3E; --ok-bg:#E2F5E7;
-  --glass:rgba(255,255,255,.7); --glass-edge:rgba(255,255,255,.95); --hi:rgba(255,255,255,.55);
-  --shadow:rgba(30,30,60,.12); --sheet:rgba(250,250,252,.94); --scrim:rgba(0,0,0,.24); --glow:rgba(226,146,58,.20);
-  /* frasco (canvas): solo hex */
-  --amber:#B9671D; --amber-deep:#6B3409; --cap:#FBFBFD; --cap-shade:#CDCDD4; --cap-a:#3F5FD9; --cap-b:#F6F4EE;
-  --label:#FFFDF7; --label-ink:#2E2E33; --is-dark:0;
-  --f-text:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
-  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
-  --f-round:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+/*DS:TOKENS:START*/
+/* ── Domésticas · sistema de diseño común (v1) ──────────────────────────────
+   Paleta: #2950F4 · #4D78F3 · #719DF6 · #99C2F8 · #BDEBFB, con el azul marino #182D4A de fondo oscuro.
+   Estilo iOS 27: tipografía del sistema (SF Pro), tarjetas blancas sobre fondo agrupado,
+   barras y botones de vidrio, cápsulas, esquinas amplias. Igual en todas las apps de la casa. */
+:root {
+  --ds-b1: #2950F4; --ds-b2: #4D78F3; --ds-b3: #719DF6; --ds-b4: #99C2F8; --ds-b5: #BDEBFB; --ds-navy: #182D4A;
+  --ds-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --ds-font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-r-card: 24px; --ds-r-inner: 16px; --ds-r-field: 14px; --ds-r-sheet: 34px; --ds-r-pill: 999px;
+
+  --ds-bg: #EFF3FB;
+  --ds-bg-top: #DFE9FD;
+  --ds-surface: #FFFFFF;
+  --ds-surface-2: #F3F6FD;
+  --ds-fill: rgba(41, 80, 244, 0.07);
+  --ds-fill-2: rgba(41, 80, 244, 0.13);
+  --ds-ink: #0E1B33;
+  --ds-ink-2: #55617A;
+  --ds-ink-3: #8691A8;
+  --ds-line: rgba(24, 45, 74, 0.12);
+  --ds-line-2: rgba(24, 45, 74, 0.2);
+  --ds-tint: #2950F4;
+  --ds-tint-soft: #E5ECFE;
+  --ds-btn: #2950F4;
+  --ds-on-btn: #FFFFFF;
+  --ds-pos: #157A43; --ds-pos-soft: #DDF4E6;
+  --ds-neg: #D1281C; --ds-neg-soft: #FDE8E6;
+  --ds-warn: #A35500; --ds-warn-soft: #FFF0D9;
+  --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.45) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #4D78F3 0%, #2950F4 58%, #2141D6 100%);
+  --ds-hero-ink: #FFFFFF;
+  --ds-hero-ink-2: rgba(255, 255, 255, 0.84);
+  --ds-hero-line: rgba(255, 255, 255, 0.28);
+  --ds-hero-glass: rgba(255, 255, 255, 0.18);
+  --ds-glass: rgba(255, 255, 255, 0.7);
+  --ds-glass-strong: rgba(255, 255, 255, 0.86);
+  --ds-glass-line: rgba(255, 255, 255, 0.85);
+  --ds-glass-edge: rgba(14, 27, 51, 0.1);
+  --ds-glass-blur: blur(22px) saturate(1.8);
+  --ds-shadow-1: 0 1px 2px rgba(24, 45, 74, 0.05), 0 4px 14px rgba(24, 45, 74, 0.05);
+  --ds-shadow-2: 0 12px 32px rgba(24, 45, 74, 0.16), 0 2px 8px rgba(24, 45, 74, 0.08);
+  --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 6px 16px rgba(41, 80, 244, 0.26);
+  --ds-scrim: rgba(14, 27, 51, 0.36);
+  --ds-chart-1: #2950F4; --ds-chart-2: #719DF6; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#000000; --card:#1C1C1E; --fg:#F5F5F7; --fg2:#98989F; --sep:#38383A; --fill:#2C2C2E; --fill-2:#3A3A3D; --knob:#FFFFFF;
-    --tint:#0A84FF; --on-tint:#FFFFFF; --tint-glow:rgba(10,132,255,.32);
-    --warn:#FF9F0A; --warn-bg:#36270F; --on-warn:#1D1300;
-    --crit:#FF453A; --crit-bg:#3A1513; --on-crit:#FFFFFF;
-    --ok:#30D158; --ok-bg:#11301A;
-    --glass:rgba(44,44,48,.62); --glass-edge:rgba(255,255,255,.12); --hi:rgba(255,255,255,.12);
-    --shadow:rgba(0,0,0,.5); --sheet:rgba(32,32,34,.94); --scrim:rgba(0,0,0,.5); --glow:rgba(214,128,40,.20);
-    --amber:#CC7A2E; --amber-deep:#3D1C03; --cap:#E6E6EA; --cap-shade:#9A9AA2; --cap-a:#6F87FF; --cap-b:#EEEBE3;
-    --label:#E8E4DA; --label-ink:#2A2A2E; --is-dark:1;
-    color-scheme:dark;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ds-bg: #0A1224;
+    --ds-bg-top: #13244A;
+    --ds-surface: #152340;
+    --ds-surface-2: #1C2C4D;
+    --ds-fill: rgba(113, 157, 246, 0.12);
+    --ds-fill-2: rgba(113, 157, 246, 0.2);
+    --ds-ink: #EEF3FF;
+    --ds-ink-2: #A9B6D0;
+    --ds-ink-3: #77859F;
+    --ds-line: rgba(189, 235, 251, 0.11);
+    --ds-line-2: rgba(189, 235, 251, 0.2);
+    --ds-tint: #8EB0FA;
+    --ds-tint-soft: rgba(113, 157, 246, 0.18);
+    --ds-btn: #3A62F5;
+    --ds-on-btn: #FFFFFF;
+    --ds-pos: #5DD68E; --ds-pos-soft: rgba(93, 214, 142, 0.14);
+    --ds-neg: #FF8A80; --ds-neg-soft: rgba(255, 138, 128, 0.14);
+    --ds-warn: #FFB65C; --ds-warn-soft: rgba(255, 182, 92, 0.14);
+    --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.28) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #3D68F2 0%, #2950F4 55%, #1C38C2 100%);
+    --ds-glass: rgba(24, 40, 70, 0.62);
+    --ds-glass-strong: rgba(24, 40, 70, 0.84);
+    --ds-glass-line: rgba(255, 255, 255, 0.14);
+    --ds-glass-edge: rgba(0, 0, 0, 0.4);
+    --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --ds-shadow-2: 0 14px 36px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 0, 0, 0.35);
+    --ds-scrim: rgba(0, 0, 0, 0.55);
+    --ds-chart-1: #719DF6; --ds-chart-2: #4D78F3; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+    color-scheme: dark;
   }
 }
-:root[data-theme="dark"]{
-  --bg:#000000; --card:#1C1C1E; --fg:#F5F5F7; --fg2:#98989F; --sep:#38383A; --fill:#2C2C2E; --fill-2:#3A3A3D; --knob:#FFFFFF;
-  --tint:#0A84FF; --on-tint:#FFFFFF; --tint-glow:rgba(10,132,255,.32);
-  --warn:#FF9F0A; --warn-bg:#36270F; --on-warn:#1D1300;
-  --crit:#FF453A; --crit-bg:#3A1513; --on-crit:#FFFFFF;
-  --ok:#30D158; --ok-bg:#11301A;
-  --glass:rgba(44,44,48,.62); --glass-edge:rgba(255,255,255,.12); --hi:rgba(255,255,255,.12);
-  --shadow:rgba(0,0,0,.5); --sheet:rgba(32,32,34,.94); --scrim:rgba(0,0,0,.5); --glow:rgba(214,128,40,.20);
-  --amber:#CC7A2E; --amber-deep:#3D1C03; --cap:#E6E6EA; --cap-shade:#9A9AA2; --cap-a:#6F87FF; --cap-b:#EEEBE3;
-  --label:#E8E4DA; --label-ink:#2A2A2E; --is-dark:1;
-  color-scheme:dark;
+:root[data-theme="dark"] {
+  --ds-bg: #0A1224;
+  --ds-bg-top: #13244A;
+  --ds-surface: #152340;
+  --ds-surface-2: #1C2C4D;
+  --ds-fill: rgba(113, 157, 246, 0.12);
+  --ds-fill-2: rgba(113, 157, 246, 0.2);
+  --ds-ink: #EEF3FF;
+  --ds-ink-2: #A9B6D0;
+  --ds-ink-3: #77859F;
+  --ds-line: rgba(189, 235, 251, 0.11);
+  --ds-line-2: rgba(189, 235, 251, 0.2);
+  --ds-tint: #8EB0FA;
+  --ds-tint-soft: rgba(113, 157, 246, 0.18);
+  --ds-btn: #3A62F5;
+  --ds-on-btn: #FFFFFF;
+  --ds-pos: #5DD68E; --ds-pos-soft: rgba(93, 214, 142, 0.14);
+  --ds-neg: #FF8A80; --ds-neg-soft: rgba(255, 138, 128, 0.14);
+  --ds-warn: #FFB65C; --ds-warn-soft: rgba(255, 182, 92, 0.14);
+  --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.28) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #3D68F2 0%, #2950F4 55%, #1C38C2 100%);
+  --ds-glass: rgba(24, 40, 70, 0.62);
+  --ds-glass-strong: rgba(24, 40, 70, 0.84);
+  --ds-glass-line: rgba(255, 255, 255, 0.14);
+  --ds-glass-edge: rgba(0, 0, 0, 0.4);
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --ds-shadow-2: 0 14px 36px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 0, 0, 0.35);
+  --ds-scrim: rgba(0, 0, 0, 0.55);
+  --ds-chart-1: #719DF6; --ds-chart-2: #4D78F3; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+  color-scheme: dark;
+}
+html { background: var(--ds-bg); }
+body {
+  font-family: var(--ds-font);
+  background: linear-gradient(180deg, var(--ds-bg-top) 0, var(--ds-bg) 340px) no-repeat, var(--ds-bg);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.012em;
+}
+/* ── fin de los tokens comunes ── */
+
+:root {
+  --bg: var(--ds-bg); --card: var(--ds-surface); --fg: var(--ds-ink); --fg2: var(--ds-ink-2); --sep: var(--ds-line-2); --fill: var(--ds-fill); --fill-2: var(--ds-fill-2); --knob: #FFFFFF;
+  --tint: var(--ds-btn); --on-tint: #FFFFFF; --tint-glow: rgba(41, 80, 244, 0.28);
+  --warn: var(--ds-warn); --warn-bg: var(--ds-warn-soft); --on-warn: #FFFFFF;
+  --crit: var(--ds-neg); --crit-bg: var(--ds-neg-soft); --on-crit: #FFFFFF;
+  --ok: var(--ds-pos); --ok-bg: var(--ds-pos-soft);
+  --glass: var(--ds-glass); --glass-edge: var(--ds-glass-line); --hi: rgba(255, 255, 255, 0.55);
+  --shadow: rgba(24, 45, 74, 0.12); --sheet: rgba(250, 251, 255, 0.94); --scrim: var(--ds-scrim); --glow: rgba(113, 157, 246, 0.22);
+  /* frasco (canvas): solo hex */
+  --amber:#B9671D; --amber-deep:#6B3409; --cap:#FBFBFD; --cap-shade:#CDCDD4; --cap-a:#2950F4; --cap-b:#F6F4EE;
+  --label:#FFFDF7; --label-ink:#2E2E33; --is-dark:0;
+  --f-text: var(--ds-font); --f-display: var(--ds-font-display); --f-round: var(--ds-font-round);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tint: #3A62F5; --tint-glow: rgba(58, 98, 245, 0.34); --on-warn: #1D1300;
+    --hi: rgba(255, 255, 255, 0.12); --shadow: rgba(0, 0, 0, 0.5); --sheet: rgba(21, 35, 64, 0.95); --glow: rgba(113, 157, 246, 0.16);
+    --amber:#CC7A2E; --amber-deep:#3D1C03; --cap:#E6E6EA; --cap-shade:#9A9AA2; --cap-a:#719DF6; --cap-b:#EEEBE3;
+    --label:#E8E4DA; --label-ink:#2A2A2E; --is-dark:1;
+  }
+}
+:root[data-theme="dark"] {
+    --tint: #3A62F5; --tint-glow: rgba(58, 98, 245, 0.34); --on-warn: #1D1300;
+    --hi: rgba(255, 255, 255, 0.12); --shadow: rgba(0, 0, 0, 0.5); --sheet: rgba(21, 35, 64, 0.95); --glow: rgba(113, 157, 246, 0.16);
+    --amber:#CC7A2E; --amber-deep:#3D1C03; --cap:#E6E6EA; --cap-shade:#9A9AA2; --cap-a:#719DF6; --cap-b:#EEEBE3;
+    --label:#E8E4DA; --label-ink:#2A2A2E; --is-dark:1;
 }
 
+/*DS:TOKENS:END*/
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{background:var(--bg)}
@@ -213,18 +322,47 @@ h1{margin:0; font:700 34px/1.1 var(--f-display); letter-spacing:-.022em; text-wr
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{animation:none!important; transition:none!important}
 }
+
+/*DS:LAYER:START*/
+/* ── Domésticas · base común (v1) ── */
+html { background: var(--ds-bg); }
+body {
+  font-family: var(--ds-font);
+  background: linear-gradient(180deg, var(--ds-bg-top) 0, var(--ds-bg) 360px) no-repeat, var(--ds-bg);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+h1, h2, h3, h4 { font-family: var(--ds-font-display); letter-spacing: -0.022em; }
+button, input, select, textarea { font-family: inherit; }
+::selection { background: var(--ds-tint-soft); }
+:focus-visible { outline-color: var(--ds-tint); }
+input, select, textarea { accent-color: var(--ds-btn); caret-color: var(--ds-tint); }
+@keyframes ds-rise { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+.mark.app-icon, img.app-icon { display: block; padding: 0; background: none; object-fit: cover; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 4px 12px rgba(41, 80, 244, 0.25); }
+/* ── fin de la base común ── */
+
+/* Mi cápsula diaria */
+.top-row { justify-content: flex-start; align-items: center; padding-top: 4px; }
+.top-row .mark { width: 46px; height: 46px; flex: none; }
+.top-t { flex: 1; min-width: 0; }
+.top-t .eyebrow { font: 600 13px/1.2 var(--ds-font); letter-spacing: -0.005em; text-transform: none; color: var(--ds-ink-2); }
+.top-t h1 { font: 700 30px/1.08 var(--ds-font-display); letter-spacing: -0.03em; }
+.icon-btn.glass { color: var(--ds-tint); }
+
+/*DS:LAYER:END*/
 </style>
 </head>
 <body>
 <div class="app">
   <header>
     <div class="top-row">
-      <p class="eyebrow" id="today">Hoy</p>
+      <img class="mark app-icon" src="icon-180.png" alt="">
+      <div class="top-t"><p class="eyebrow" id="today">Hoy</p><h1>Mi cápsula diaria</h1></div>
       <button class="icon-btn glass" id="btnNew" type="button" aria-label="Registrar frasco nuevo">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
       </button>
     </div>
-    <h1>Mi cápsula diaria</h1>
   </header>
 
   <section class="banner" id="banner" role="status" hidden>
