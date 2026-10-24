@@ -1,5 +1,5 @@
 // Guarda la app para abrirla sin conexión; siempre intenta primero la versión más nueva.
-const CACHE = 'capsula-v1-ds2';
+const CACHE = 'capsula-v2-panel';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
