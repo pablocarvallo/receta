@@ -138,7 +138,8 @@ body {
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.012em;
 }
-/* ── fin de los tokens comunes ── */
+/*DS:TOKENS:END*/
+/*DS:VARS:START*/
 
 :root {
   --bg: var(--ds-bg); --card: var(--ds-surface); --fg: var(--ds-ink); --fg2: var(--ds-ink-2); --sep: var(--ds-line-2); --fill: var(--ds-fill); --fill-2: var(--ds-fill-2); --knob: #FFFFFF;
@@ -168,7 +169,7 @@ body {
     --label:#E8E4DA; --label-ink:#2A2A2E; --is-dark:1;
 }
 
-/*DS:TOKENS:END*/
+/*DS:VARS:END*/
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{background:var(--bg)}
@@ -323,8 +324,8 @@ h1{margin:0; font:700 34px/1.1 var(--f-display); letter-spacing:-.022em; text-wr
   *, *::before, *::after{animation:none!important; transition:none!important}
 }
 
-/*DS:LAYER:START*/
-/* ── Domésticas · base común (v1) ── */
+/*DS:BASE:START*/
+/* ── Domésticas · elementos comunes (v1): fondo, tipografía, campos, icono de la app ── */
 html { background: var(--ds-bg); }
 body {
   font-family: var(--ds-font);
@@ -340,7 +341,8 @@ button, input, select, textarea { font-family: inherit; }
 input, select, textarea { accent-color: var(--ds-btn); caret-color: var(--ds-tint); }
 @keyframes ds-rise { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
 .mark.app-icon, img.app-icon { display: block; overflow: hidden; padding: 0; background: none; object-fit: cover; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 4px 12px rgba(41, 80, 244, 0.25); }
-/* ── fin de la base común ── */
+/*DS:BASE:END*/
+/*DS:APP:START*/
 
 /* Mi cápsula diaria */
 .top-row { justify-content: flex-start; align-items: center; padding-top: 4px; }
@@ -350,7 +352,7 @@ input, select, textarea { accent-color: var(--ds-btn); caret-color: var(--ds-tin
 .top-t h1 { font: 700 30px/1.08 var(--ds-font-display); letter-spacing: -0.03em; }
 .icon-btn.glass { color: var(--ds-tint); }
 
-/*DS:LAYER:END*/
+/*DS:APP:END*/
 /*PANEL:CSS:START*/
 /* Tarjeta «Panel Casa», igual en todas las apps conectadas al panel */
 .pc-host { max-width: 480px; margin: -20px auto calc(40px + env(safe-area-inset-bottom, 0px)); }
